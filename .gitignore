@@ -1,0 +1,4 @@
+*.png
+*batch*
+*.tar.gz
+*pycache*
