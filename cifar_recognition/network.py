@@ -87,6 +87,15 @@ class VGG(nn.Module):
         # 16
         self.fc_out = nn.Linear(4096, num_classes)
 
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv2d_1(x)    # 1. n x 3 x 32a x 32b  ---→ n x 64 x 32a x 32b
         x = self.relu_1(x)
@@ -142,12 +151,12 @@ class VGG(nn.Module):
         x = self.fc_1(x)        # 14
         x = self.relu_14(x)
 
-        x = self.dropout_1(x)
+        #x = self.dropout_1(x)
 
         x = self.fc_2(x)        # 15
         x = self.relu_15(x)
 
-        x = self.dropout_2(x)
+        #x = self.dropout_2(x)
 
         x = self.fc_out(x)      # 16
 
