@@ -12,12 +12,15 @@ class LoadImagesAndLabels(Dataset):
         self.image_paths = []
         self.labels = []
         
+        # self.image_paths存放path下的十个文件夹中的全部png图片的路径
+        # self.labels存放self.image_paths每个图片的类别
         for i in range(10):
-            image_paths = glob.glob(os.path.join(path,str(i),'*.png'), recursive=True)
+            image_paths = glob.glob(os.path.join(path, str(i), '*.png'), recursive=True)
             self.image_paths = self.image_paths+image_paths
             labels = np.ones(len(image_paths))*i
             self.labels = np.append(self.labels, labels)
         
+        # 类别标签的数据类型应为long，即int64
         self.labels = self.labels.astype(np.int64)
 
     def __len__(self):

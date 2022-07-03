@@ -87,6 +87,7 @@ class VGG(nn.Module):
         # 16
         self.fc_out = nn.Linear(4096, num_classes)
 
+        # 对网络的权重层进行初始化
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
@@ -100,15 +101,15 @@ class VGG(nn.Module):
         x = self.conv2d_1(x)    # 1. n x 3 x 32a x 32b  ---→ n x 64 x 32a x 32b
         x = self.relu_1(x)
 
-        x = self.conv2d_2(x)    # 2. 64 x 32a x 32b ---→ 64 x 32a x 32b
+        x = self.conv2d_2(x)    # 2. n x 64 x 32a x 32b ---→ n x 64 x 32a x 32b
         x = self.relu_2(x)
 
-        x = self.pool_1(x)      #    64 x 32a x 32b ---→ 64 x 16a x 16b
+        x = self.pool_1(x)      #    n x 64 x 32a x 32b ---→ n x 64 x 16a x 16b
 
-        x = self.conv2d_3(x)    # 3. 64 x 16a x 16b ---→ 128 x 16a x 16b
+        x = self.conv2d_3(x)    # 3. n x 64 x 16a x 16b ---→ n x 128 x 16a x 16b
         x = self.relu_3(x)
 
-        x = self.conv2d_4(x)    # 4. 128 x 16a x 16b ---→ 128 x 16a x 16b
+        x = self.conv2d_4(x)    # 4. n x 128 x 16a x 16b ---→ n x 128 x 16a x 16b
         x = self.relu_4(x)
 
         x = self.pool_2(x)
